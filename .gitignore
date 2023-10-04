@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+ffmpeg/
+ffmpeg/ffmpeg.exe
+.idea/artifacts/
+.idea/artifacts/BiliBiliVideoMerge_jar.xml
