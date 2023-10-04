@@ -7,16 +7,14 @@
 >### B站缓存视频文件结构如下(文件夹名称以实际视频为准)
 ```
 s_45570
-├── 765277
-│   ├── 80
-│   │   ├── audio.m4s
-│   │   ├── index.json
-│   │   └── video.m4s
-│   │
-│   ├── danmaku.xml
-│   └── entry.json
-│
-└── 765278
+└── 765277
+    ├── 80
+    │   ├── audio.m4s
+    │   ├── index.json
+    │   └── video.m4s
+    │
+    ├── danmaku.xml
+    └── entry.json
 ```
 
 ---
