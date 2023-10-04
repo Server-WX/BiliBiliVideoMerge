@@ -13,7 +13,7 @@ public class DirManager {
 
         File path = new File(this.dirPath);
         if (!path.exists()) {
-            System.out.println("非法路径！");
+            System.out.println("非法路径！请检查是否正确！");
             return null;
         }
 
