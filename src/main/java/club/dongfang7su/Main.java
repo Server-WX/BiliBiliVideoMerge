@@ -93,7 +93,7 @@ public class Main {
         System.out.println("处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒");
         System.out.println();
 
-        System.out.println("按下回车键退出程序");
-        sc.next();    //  回车退出程序
+        System.out.println("输入任意内容回车退出程序");
+        sc.nextLine();    //  回车退出程序
     }
 }
