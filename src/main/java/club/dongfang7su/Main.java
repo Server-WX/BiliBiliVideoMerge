@@ -94,6 +94,6 @@ public class Main {
         System.out.println();
 
         System.out.println("输入任意内容回车退出程序");
-        sc.nextLine();    //  回车退出程序
+        sc.next();    //  回车退出程序
     }
 }
