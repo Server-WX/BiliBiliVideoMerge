@@ -28,7 +28,6 @@ public class SaveFile {
             String[] NVIDIA_GPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\""};
             String[] INTEL_GPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_qsv " + "\"" + output + "\""};
             String[] SOFTWARE_CPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v libx264 " + "\"" + output + "\""};
-//            String[] command = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\""};
 
             switch (encoder) {
                 case "NVIDIA_GPU":
@@ -52,7 +51,6 @@ public class SaveFile {
             // 获取输出流
             InputStream inputStream = videoProcess.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-
             // 读取输出内容并打印
             String line;
             while ((line = reader.readLine()) != null) {
