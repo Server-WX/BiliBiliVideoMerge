@@ -37,6 +37,7 @@ build/
 ### Mac OS ###
 .DS_Store
 
+# 程序测试文件
 ffmpeg/
 ffmpeg/ffmpeg.exe
 .idea/artifacts/
