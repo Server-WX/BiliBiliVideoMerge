@@ -58,6 +58,8 @@ public class Main {
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
+        System.out.println("文件夹名称：");
+        String folderName = sc.next();
         long startTime = System.currentTimeMillis();
         switch (ifNumber) {
             case 1:
@@ -66,7 +68,8 @@ public class Main {
                         dirManager.getDirPathList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        NVIDIA_GPU
+                        NVIDIA_GPU,
+                        folderName
                 );
                 break;
             case 2:
@@ -75,7 +78,8 @@ public class Main {
                         dirManager.getDirPathList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        INTEL_GPU
+                        INTEL_GPU,
+                        folderName
                 );
                 break;
             case 3:
@@ -84,7 +88,8 @@ public class Main {
                         dirManager.getDirPathList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        SOFTWARE_CPU
+                        SOFTWARE_CPU,
+                        folderName
                 );
                 break;
         }
