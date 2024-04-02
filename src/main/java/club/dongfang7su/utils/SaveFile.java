@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SaveFile {
-    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
+    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder, String folderName) {
         File path = new File(dirPath);
         System.out.println(path.getPath() + " " + path.exists());
         File savePath = new File(path.getParentFile() + "\\" + dirName);
@@ -19,7 +19,7 @@ public class SaveFile {
         String ffmpegPath = "ffmpeg/ffmpeg.exe"; // TODO: 注意替换ffmpeg程序路径
 
         for (int i = 0; i < filesPath.length; i++) {
-            String mediaFilePath = filesPath[i] + "\\80\\";
+            String mediaFilePath = filesPath[i] + "\\" + folderName + "\\";
             String output = savePath + "\\" + fileNameList.get(i) + ".mp4";
             System.out.println(output);
             String videoFile = mediaFilePath + "video.m4s";
