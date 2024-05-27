@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SaveFile {
-    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder, String folderName) {
+    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
         File path = new File(dirPath);
         System.out.println(path.getPath() + " " + path.exists());
         File savePath = new File(path.getParentFile() + "\\" + dirName);
@@ -18,6 +18,10 @@ public class SaveFile {
 
         String ffmpegPath = "ffmpeg/ffmpeg.exe"; // TODO: 注意替换ffmpeg程序路径
 
+        String NVIDIA_GPU;
+        String INTEL_GPU;
+        String SOFTWARE_CPU;
+
         for (int i = 0; i < filesPath.length; i++) {
             String mediaFilePath = filesPath[i] + "\\" + folderName + "\\";
             String output = savePath + "\\" + fileNameList.get(i) + ".mp4";
@@ -25,9 +29,9 @@ public class SaveFile {
             String videoFile = mediaFilePath + "video.m4s";
             String audioFile = mediaFilePath + "audio.m4s";
 
-            String[] NVIDIA_GPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\""};
-            String[] INTEL_GPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_qsv " + "\"" + output + "\""};
-            String[] SOFTWARE_CPU = {"\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v libx264 " + "\"" + output + "\""};
+            NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\"";
+            INTEL_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_qsv " + "\"" + output + "\"";
+            SOFTWARE_CPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v libx264 " + "\"" + output + "\"";
 
             switch (encoder) {
                 case "NVIDIA_GPU":
@@ -44,9 +48,9 @@ public class SaveFile {
         }
     }
 
-    private static void outputFile(String[] command, String output) {
+    private static void outputFile(String command, String output) {
         try {
-            System.out.println(Arrays.toString(command));
+            System.out.println(command);
             Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
             // 获取输出流
             InputStream inputStream = videoProcess.getInputStream();
