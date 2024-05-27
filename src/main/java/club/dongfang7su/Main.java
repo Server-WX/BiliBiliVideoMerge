@@ -6,6 +6,7 @@ import club.dongfang7su.utils.SaveFile;
 import club.dongfang7su.utils.VideoMerge;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -29,14 +30,20 @@ public class Main {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
         }
-//        dirPath = "D:\\桌面\\s_45570";
+//        dirPath = "D:\\桌面\\a";
 
         DirManager dirManager = new DirManager();
         if (dirPath != null) {
             System.out.println("加载文件中");
             System.out.println();
             dirManager.setDirPath(dirPath);     //  初始化路径管理器，进入文件夹
-            System.out.println("视频总数：" + Objects.requireNonNull(new File(dirPath).listFiles()).length);
+            try {
+                System.out.println("视频总数：" + Objects.requireNonNull(new File(dirPath).listFiles()).length);
+            } catch (NullPointerException e) {
+                System.out.println("此文件夹无法读取");
+                System.exit(0);
+            }
+
             System.out.println();
         }
 
@@ -94,9 +101,7 @@ public class Main {
                 break;
         }
         long endTime = System.currentTimeMillis();
-        System.out.println();
-        System.out.println("处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒");
-        System.out.println();
+        System.out.println("\n处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒\n");
 
         System.out.println("输入任意内容回车退出程序");
         sc.next();    //  回车退出程序
