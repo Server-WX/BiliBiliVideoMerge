@@ -21,12 +21,17 @@ public class Main {
         final String INTEL_GPU = "INTEL_GPU";
         final String SOFTWARE_CPU = "SOFTWARE_CPU";
 
-        /*for (String arg : args) {
+        for (String arg : args) {
             if (new File(arg).exists()) {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
-        }*/
-        dirPath = "D:\\桌面\\1654875709";
+        }
+//        dirPath = "D:\\桌面\\1654875709";
+
+        if (!new File("ffmpeg/ffmpeg.exe").exists()) {
+            System.out.println("ffmpeg路径错误或程序不存在！！！");
+            ExitProgram.exit();
+        }
 
         DirManager dirManager = new DirManager();
         if (dirPath != null) {
@@ -50,7 +55,7 @@ public class Main {
                 jsonData.getIndexTitleList()
         );
 
-        System.out.println(jsonData.getAvailableFileList());
+//        System.out.println(jsonData.getAvailableFileList());
 
         System.out.println("加载完毕，请选择编码器：");
         System.out.println();
@@ -62,38 +67,33 @@ public class Main {
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
-        System.out.println("文件夹名称：");
-        String folderName = sc.next();
         long startTime = System.currentTimeMillis();
         switch (ifNumber) {
             case 1:
                 new SaveFile(
                         dirPath,
-                        dirManager.getDirPathList(),
+                        jsonData.getAvailableFileList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        NVIDIA_GPU,
-                        folderName
+                        NVIDIA_GPU
                 );
                 break;
             case 2:
                 new SaveFile(
                         dirPath,
-                        dirManager.getDirPathList(),
+                        jsonData.getAvailableFileList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        INTEL_GPU,
-                        folderName
+                        INTEL_GPU
                 );
                 break;
             case 3:
                 new SaveFile(
                         dirPath,
-                        dirManager.getDirPathList(),
+                        jsonData.getAvailableFileList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        SOFTWARE_CPU,
-                        folderName
+                        SOFTWARE_CPU
                 );
                 break;
         }
