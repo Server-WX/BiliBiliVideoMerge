@@ -1,9 +1,6 @@
 package club.dongfang7su;
 
-import club.dongfang7su.utils.DirManager;
-import club.dongfang7su.utils.GetJsonData;
-import club.dongfang7su.utils.SaveFile;
-import club.dongfang7su.utils.VideoMerge;
+import club.dongfang7su.utils.*;
 
 import java.io.File;
 import java.util.Objects;
@@ -24,12 +21,12 @@ public class Main {
         final String INTEL_GPU = "INTEL_GPU";
         final String SOFTWARE_CPU = "SOFTWARE_CPU";
 
-        for (String arg : args) {
+        /*for (String arg : args) {
             if (new File(arg).exists()) {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
-        }
-//        dirPath = "D:\\桌面\\a";
+        }*/
+        dirPath = "D:\\桌面\\1654875709";
 
         DirManager dirManager = new DirManager();
         if (dirPath != null) {
@@ -49,10 +46,11 @@ public class Main {
         GetJsonData jsonData = new GetJsonData(dirManager.getDirPathList());    //  读取entry.json中的数据
         //  获取番剧名称、集数，标题
         VideoMerge videoMerge = new VideoMerge(
-                dirManager.getDirPathList(),
                 jsonData.getIndexList(),
                 jsonData.getIndexTitleList()
         );
+
+        System.out.println(jsonData.getAvailableFileList());
 
         System.out.println("加载完毕，请选择编码器：");
         System.out.println();
@@ -102,7 +100,6 @@ public class Main {
         long endTime = System.currentTimeMillis();
         System.out.println("\n处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒\n");
 
-        System.out.println("输入任意内容回车退出程序");
-        sc.next();    //  回车退出程序
+        ExitProgram.exit();
     }
 }
