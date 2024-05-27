@@ -2,7 +2,6 @@ package club.dongfang7su.utils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SaveFile {
     public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder, String folderName) {
