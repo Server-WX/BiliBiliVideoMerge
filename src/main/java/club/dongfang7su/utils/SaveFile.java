@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SaveFile {
-    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
+    public SaveFile(String dirPath, File[] filesPath, String dirName, ArrayList<String> fileNameList, String encoder, String folderName) {
         File path = new File(dirPath);
         System.out.println(path.getPath() + " " + path.exists());
         File savePath = new File(path.getParentFile() + "\\" + dirName);
