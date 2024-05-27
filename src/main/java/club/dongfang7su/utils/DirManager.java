@@ -1,6 +1,7 @@
 package club.dongfang7su.utils;
 
 import java.io.File;
+import java.util.Objects;
 
 public class DirManager {
 
@@ -10,15 +11,15 @@ public class DirManager {
     }
 
     public File[] getDirPathList() {
-
         File path = new File(this.dirPath);
         if (!path.exists()) {
-            System.out.println("非法路径！请检查是否正确！");
             return null;
         }
-
+        if (Objects.requireNonNull(path.listFiles()).length == 0){
+            System.out.println("文件夹为空，请重新选择");
+            ExitProgram.exit();
+        }
         return path.listFiles();
-
     }
 
     public void setDirPath(String dirPath) {
