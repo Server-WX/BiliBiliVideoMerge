@@ -20,6 +20,7 @@ public class Main {
         final String NVIDIA_GPU = "NVIDIA_GPU";
         final String INTEL_GPU = "INTEL_GPU";
         final String SOFTWARE_CPU = "SOFTWARE_CPU";
+        final String DEFAULT = "DEFAULT";
 
         for (String arg : args) {
             if (new File(arg).exists()) {
@@ -64,6 +65,7 @@ public class Main {
         System.out.println("1.  英伟达独显加速");
         System.out.println("2.  英特尔核显加速");
         System.out.println("3.  CPU软件编码");
+        System.out.println("4.  快速无损合并");
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
@@ -94,6 +96,15 @@ public class Main {
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
                         SOFTWARE_CPU
+                );
+                break;
+            case 4:
+                new SaveFile(
+                        dirPath,
+                        jsonData.getAvailableFileList(),
+                        jsonData.getVideoName(),
+                        videoMerge.getFileNameList(),
+                        DEFAULT
                 );
                 break;
         }

@@ -38,6 +38,7 @@ public class SaveFile {
         String NVIDIA_GPU;
         String INTEL_GPU;
         String SOFTWARE_CPU;
+        String DEFAULT;
 
         for (int i = 0; i < filesPath.size(); i++) {
             String mediaFilePath = null;
@@ -57,6 +58,7 @@ public class SaveFile {
             NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\"";
             INTEL_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_qsv " + "\"" + output + "\"";
             SOFTWARE_CPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v libx264 " + "\"" + output + "\"";
+            DEFAULT = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy " + "\"" + output + "\"";
 
             switch (encoder) {
                 case "NVIDIA_GPU":
@@ -67,6 +69,9 @@ public class SaveFile {
                     break;
                 case "SOFTWARE_CPU":
                     outputFile(SOFTWARE_CPU, output);
+                    break;
+                case "DEFAULT":
+                    outputFile(DEFAULT, output);
                     break;
             }
 
