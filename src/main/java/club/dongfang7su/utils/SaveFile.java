@@ -37,7 +37,7 @@ public class SaveFile {
 
         String NVIDIA_GPU;
         String INTEL_GPU;
-        String SOFTWARE_CPU;
+        String DIRECTXAPI;
         String DEFAULT;
 
         for (int i = 0; i < filesPath.size(); i++) {
@@ -55,10 +55,10 @@ public class SaveFile {
             String videoFile = mediaFilePath + "video.m4s";
             String audioFile = mediaFilePath + "audio.m4s";
 
-            NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_nvenc " + "\"" + output + "\"";
-            INTEL_GPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v h264_qsv " + "\"" + output + "\"";
-            SOFTWARE_CPU = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy -c:v libx264 " + "\"" + output + "\"";
-            DEFAULT = "\"" + ffmpegPath + "\"" + " -i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -codec copy " + "\"" + output + "\"";
+            NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel cuda " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
+            INTEL_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel qsv " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
+            DIRECTXAPI = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel dxva2 " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
+            DEFAULT = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel auto " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
 
             switch (encoder) {
                 case "NVIDIA_GPU":
@@ -67,8 +67,8 @@ public class SaveFile {
                 case "INTEL_GPU":
                     outputFile(INTEL_GPU, output);
                     break;
-                case "SOFTWARE_CPU":
-                    outputFile(SOFTWARE_CPU, output);
+                case "DIRECTXAPI":
+                    outputFile(DIRECTXAPI, output);
                     break;
                 case "DEFAULT":
                     outputFile(DEFAULT, output);
@@ -79,8 +79,8 @@ public class SaveFile {
     }
 
     private static void outputFile(String command, String output) {
+//        System.out.println(command);
         try {
-//            System.out.println(command);
             Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
             // 获取输出流
             InputStream inputStream = videoProcess.getInputStream();
