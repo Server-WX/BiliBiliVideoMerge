@@ -19,7 +19,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         final String NVIDIA_GPU = "NVIDIA_GPU";
         final String INTEL_GPU = "INTEL_GPU";
-        final String SOFTWARE_CPU = "SOFTWARE_CPU";
+        final String DIRECTXAPI = "DIRECTXAPI";
         final String DEFAULT = "DEFAULT";
 
         for (String arg : args) {
@@ -27,7 +27,7 @@ public class Main {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
         }
-//        dirPath = "D:\\桌面\\1654875709";
+//        dirPath = "D:\\桌面\\s_46004";
 
         if (!new File("ffmpeg/ffmpeg.exe").exists()) {
             System.out.println("ffmpeg路径错误或程序不存在！！！");
@@ -64,8 +64,8 @@ public class Main {
         System.out.println();
         System.out.println("1.  英伟达独显加速");
         System.out.println("2.  英特尔核显加速");
-        System.out.println("3.  CPU软件编码");
-        System.out.println("4.  快速无损合并");
+        System.out.println("3.  DirectX加速");
+        System.out.println("4.  自动选择");
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
@@ -95,7 +95,7 @@ public class Main {
                         jsonData.getAvailableFileList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        SOFTWARE_CPU
+                        DIRECTXAPI
                 );
                 break;
             case 4:
