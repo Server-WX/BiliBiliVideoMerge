@@ -19,7 +19,6 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         final String NVIDIA_GPU = "NVIDIA_GPU";
         final String INTEL_GPU = "INTEL_GPU";
-        final String DIRECTXAPI = "DIRECTXAPI";
         final String DEFAULT = "DEFAULT";
 
         for (String arg : args) {
@@ -27,7 +26,7 @@ public class Main {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
         }
-//        dirPath = "D:\\桌面\\s_46004";
+        dirPath = "D:\\桌面\\304800481";
 
         if (!new File("ffmpeg/ffmpeg.exe").exists()) {
             System.out.println("ffmpeg路径错误或程序不存在！！！");
@@ -36,9 +35,9 @@ public class Main {
 
         DirManager dirManager = new DirManager();
         if (dirPath != null) {
-            System.out.println("加载文件中");
-            System.out.println();
+            System.out.println("加载文件中....");
             dirManager.setDirPath(dirPath);     //  初始化路径管理器，进入文件夹
+            System.out.println("加载完毕!");
             try {
                 System.out.println("视频总数：" + Objects.requireNonNull(new File(dirPath).listFiles()).length);
             } catch (NullPointerException e) {
@@ -58,17 +57,15 @@ public class Main {
 
 //        System.out.println(jsonData.getAvailableFileList());
 
-        System.out.println("加载完毕，请选择编码器：");
-        System.out.println();
-        System.out.println("输入对应数字回车即可：");
-        System.out.println();
+        System.out.println("请选择要使用的解码器(不知道选哪个的请选择 自动)：");
+        System.out.println("输入对应数字回车即可：\n");
         System.out.println("1.  英伟达独显加速");
         System.out.println("2.  英特尔核显加速");
-        System.out.println("3.  DirectX加速");
-        System.out.println("4.  自动选择");
+        System.out.println("3.  自动选择");
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
+        System.out.println("为保证您的导出结果，请勿关闭程序(如需强制停止请使用任务管理器结束ffmpeg进程)");
         long startTime = System.currentTimeMillis();
         switch (ifNumber) {
             case 1:
@@ -95,21 +92,12 @@ public class Main {
                         jsonData.getAvailableFileList(),
                         jsonData.getVideoName(),
                         videoMerge.getFileNameList(),
-                        DIRECTXAPI
-                );
-                break;
-            case 4:
-                new SaveFile(
-                        dirPath,
-                        jsonData.getAvailableFileList(),
-                        jsonData.getVideoName(),
-                        videoMerge.getFileNameList(),
                         DEFAULT
                 );
                 break;
         }
         long endTime = System.currentTimeMillis();
-        System.out.println("\n处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒\n");
+        System.out.println("\n\n处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒");
 
         ExitProgram.exit();
     }
