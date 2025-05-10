@@ -61,7 +61,7 @@ public class SaveFile {
                     "-stats",
                     "-i", videoFile,
                     "-i", audioFile,
-                    "-vcodec", "h264_nvenc", "-rc", "vbr", "-cq", "1",
+                    "-vcodec", "copy",
                     "-acodec", "copy",
                     output,
                     "-y"
