@@ -13,7 +13,7 @@ public class SaveFile {
         int allFilesNumber = Objects.requireNonNull(file.listFiles()).length;
         System.out.println("视频总数：" + allFilesNumber);
         System.out.println("实际导出数：" + filesPath.size());
-        System.out.println("错误数量：" + (allFilesNumber - filesPath.size()));
+//        System.out.println("错误数量：" + (allFilesNumber - filesPath.size()));
         if (path.exists() && !savePath.exists()) {
             if (savePath.mkdir()) {
                 System.out.println("输出文件夹创建成功，文件将导出至：" + savePath);
@@ -55,6 +55,17 @@ public class SaveFile {
             String videoFile = mediaFilePath + "video.m4s";
             String audioFile = mediaFilePath + "audio.m4s";
 
+            String[] NV_GPU = {
+                    ffmpegPath,
+                    "-hide_banner", "-hwaccel", "cuda",
+                    "-loglevel", "error",
+                    "-stats",
+                    "-i",videoFile,
+                    "-i",audioFile,
+                    "-vcodec","copy",
+                    "-acodec","copy",
+                    output
+            };
             NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel cuda " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
             INTEL_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel qsv " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
             DIRECTXAPI = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel dxva2 " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
