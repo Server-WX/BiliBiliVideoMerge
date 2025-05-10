@@ -2,10 +2,7 @@ package club.dongfang7su.utils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SaveFile {
     public SaveFile(String dirPath, ArrayList<File> filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
@@ -64,7 +61,7 @@ public class SaveFile {
                     "-stats",
                     "-i", videoFile,
                     "-i", audioFile,
-                    "-vcodec", "copy",
+                    "-vcodec", "h264_nvenc", "-rc", "vbr", "-cq", "1",
                     "-acodec", "copy",
                     output,
                     "-y"
@@ -109,21 +106,65 @@ public class SaveFile {
         }
     }
 
+    private static volatile Process process;
+
     private static void outputFile(String[] command) {
         try {
-            Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
+            process = new ProcessBuilder(command).redirectErrorStream(true).start();
 
-            while ((line = reader.readLine()) != null) {
-                System.out.printf("\rffmpeg状态: " + line);
-            }
+            // 注册 Ctrl+C 钩子
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                if (process != null && process.isAlive()) {
+                    process.destroyForcibly();
+                    System.out.println("\n已终止 ffmpeg");
+                }
+            }));
 
-            process.waitFor();
+            // 输出线程（保持不变）
+            Thread outputThread = new Thread(() -> {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.printf("\rffmpeg状态: %s", line);
+                        System.out.flush();
+                    }
+                } catch (IOException e) {
+                    if (!e.getMessage().contains("Stream closed")) e.printStackTrace();
+                }
+            });
+            outputThread.start();
+
+            Thread inputThread = new Thread(() -> {
+                try (BufferedReader userInput = new BufferedReader(
+                        new InputStreamReader(System.in));
+                     OutputStream processOutput = process.getOutputStream()) {
+
+                    while (process.isAlive()) {
+                        String input = userInput.readLine();
+                        if (input == null) break;
+
+                        processOutput.write((input + "\n").getBytes());
+                        processOutput.flush();
+                    }
+                } catch (IOException e) {
+                    if (!e.getMessage().contains("closed")) e.printStackTrace();
+                }
+            });
+            inputThread.start();
+
+            // 主线程等待
+            process.waitFor(); // 恢复等待
+            System.out.println("\n导出完毕，请按下回车键退出程序");
+
+            // 清理资源
+            System.in.close();
+            outputThread.join();
+            inputThread.join();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 
