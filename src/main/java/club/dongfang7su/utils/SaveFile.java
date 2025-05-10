@@ -2,7 +2,10 @@ package club.dongfang7su.utils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SaveFile {
     public SaveFile(String dirPath, ArrayList<File> filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
@@ -24,21 +27,20 @@ public class SaveFile {
         String ffmpegPath = "ffmpeg/ffmpeg.exe"; // TODO: 注意替换ffmpeg程序路径
 
         try {
-            int second = 5;
-            System.out.println("\n程序将于" + second + "秒后开始导出\n");
+            int second = 3;
+            System.out.println();
             for (int i = second; i >= 0; i--) {
-                System.out.print(i + " ");
+                System.out.printf("\r程序将于 " + i + " 秒后开始导出");
                 Thread.sleep(1000);
             }
-            System.out.println();
+            System.out.println("\n");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        String NVIDIA_GPU;
-        String INTEL_GPU;
-        String DIRECTXAPI;
-        String DEFAULT;
+        String[] NVIDIA_GPU;
+        String[] INTEL_GPU;
+        String[] DEFAULT;
 
         for (int i = 0; i < filesPath.size(); i++) {
             String mediaFilePath = null;
@@ -55,72 +57,74 @@ public class SaveFile {
             String videoFile = mediaFilePath + "video.m4s";
             String audioFile = mediaFilePath + "audio.m4s";
 
-            String[] NV_GPU = {
+            NVIDIA_GPU = new String[]{
                     ffmpegPath,
                     "-hide_banner", "-hwaccel", "cuda",
                     "-loglevel", "error",
                     "-stats",
-                    "-i",videoFile,
-                    "-i",audioFile,
-                    "-vcodec","copy",
-                    "-acodec","copy",
-                    output
+                    "-i", videoFile,
+                    "-i", audioFile,
+                    "-vcodec", "copy",
+                    "-acodec", "copy",
+                    output,
+                    "-y"
             };
-            NVIDIA_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel cuda " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
-            INTEL_GPU = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel qsv " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
-            DIRECTXAPI = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel dxva2 " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
-            DEFAULT = "\"" + ffmpegPath + "\"" + " -hide_banner -hwaccel auto " + "-i " + "\"" + videoFile + "\"" + " -i " + "\"" + audioFile + "\"" + " -vcodec copy -acodec copy " + "\"" + output + "\"";
+            INTEL_GPU = new String[]{
+                    ffmpegPath,
+                    "-hide_banner", "-hwaccel", "qsv",
+                    "-loglevel", "error",
+                    "-stats",
+                    "-i", videoFile,
+                    "-i", audioFile,
+                    "-vcodec", "copy",
+                    "-acodec", "copy",
+                    output,
+                    "-y"
+            };
+            DEFAULT = new String[]{
+                    ffmpegPath,
+                    "-hide_banner", "-hwaccel", "auto",
+                    "-loglevel", "error",
+                    "-stats",
+                    "-i", videoFile,
+                    "-i", audioFile,
+                    "-vcodec", "copy",
+                    "-acodec", "copy",
+                    output,
+                    "-y"
+            };
 
             switch (encoder) {
                 case "NVIDIA_GPU":
-                    outputFile(NVIDIA_GPU, output);
+                    outputFile(NVIDIA_GPU);
                     break;
                 case "INTEL_GPU":
-                    outputFile(INTEL_GPU, output);
-                    break;
-                case "DIRECTXAPI":
-                    outputFile(DIRECTXAPI, output);
+                    outputFile(INTEL_GPU);
                     break;
                 case "DEFAULT":
-                    outputFile(DEFAULT, output);
+                    outputFile(DEFAULT);
                     break;
             }
 
         }
     }
 
-    private static void outputFile(String command, String output) {
-//        System.out.println(command);
+    private static void outputFile(String[] command) {
         try {
-            Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
-            // 获取输出流
-            InputStream inputStream = videoProcess.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            // 读取输出内容并打印
+            Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
-            while ((line = reader.readLine()) != null) {
-                // 清空命令行
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-                // 移动光标到命令行顶部
-                System.out.print("\033[0;0H");
-                // 输出固定显示的文字
-                System.out.println("----------------------------------------");
-                System.out.println("正在导出中，请勿关闭程序！！！！！！！！");
-                System.out.println("----------------------------------------");
 
-                // 输出日志
-                System.out.println(line);
+            while ((line = reader.readLine()) != null) {
+                System.out.printf("\rffmpeg状态: " + line);
             }
-            int exitCode = videoProcess.waitFor();
-            if (exitCode == 0) {
-                System.out.println("合并成功，文件：" + output);
-            } else {
-                System.out.println("合并失败，错误代码：" + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+
+            process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
+
 
 }
