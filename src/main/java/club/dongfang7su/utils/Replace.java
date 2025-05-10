@@ -1,5 +1,11 @@
 package club.dongfang7su.utils;
 
+/*
+*
+* 正则处理非法字符
+*
+* */
+
 public class Replace {
     public static String replaceCharacters(String str) {
         // 定义需要屏蔽的特殊字符
