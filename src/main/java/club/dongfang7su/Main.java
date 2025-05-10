@@ -26,7 +26,7 @@ public class Main {
                 dirPath = arg.replace("\\", "\\\\");     //  读取拖拽文件路径
             }
         }
-        dirPath = "D:\\桌面\\304800481";
+//        dirPath = "D:\\桌面\\304800481";
 
         if (!new File("ffmpeg/ffmpeg.exe").exists()) {
             System.out.println("ffmpeg路径错误或程序不存在！！！");
@@ -65,7 +65,7 @@ public class Main {
         System.out.println();
         //  合并视频文件，输出同级目录下
         int ifNumber = sc.nextInt();
-        System.out.println("为保证您的导出结果，请勿关闭程序(如需强制停止请使用任务管理器结束ffmpeg进程)");
+        System.out.println("为保证您的导出结果，接下来导出的过程请勿关闭程序(如需强制停止请同时按下键盘Ctrl键和C键)");
         long startTime = System.currentTimeMillis();
         switch (ifNumber) {
             case 1:
@@ -99,6 +99,6 @@ public class Main {
         long endTime = System.currentTimeMillis();
         System.out.println("\n\n处理完毕，耗时：" + (endTime - startTime) / 1000.0 + "秒");
 
-        ExitProgram.exit();
+//        ExitProgram.exit();
     }
 }
