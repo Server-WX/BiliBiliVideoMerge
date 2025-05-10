@@ -1,7 +1,12 @@
 package club.dongfang7su.utils;
 
-import java.io.File;
 import java.util.ArrayList;
+
+/*
+ *
+ * 处理视频文件名
+ *
+ * */
 
 public class VideoMerge {
 
@@ -19,6 +24,7 @@ public class VideoMerge {
     }
 
     public ArrayList<String> getFileNameList() {
+        //  返回文件名列表
         return fileNameList;
     }
 }
