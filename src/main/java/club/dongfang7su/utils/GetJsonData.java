@@ -9,6 +9,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+ *
+ * 处理json文件数据
+ *
+ * */
+
 public class GetJsonData {
 
     private final ArrayList<String> indexList = new ArrayList<>();
@@ -19,6 +25,7 @@ public class GetJsonData {
 
 
     private static JsonObject getReader(File file) throws FileNotFoundException {
+        //  导入json文件
         JsonObject jsonObject;
         JsonReader reader = Json.createReader(new FileReader(file.getPath() + "\\entry.json"));
         jsonObject = reader.readObject();
@@ -31,11 +38,10 @@ public class GetJsonData {
         String cartoon = "ep";
         String userVideo = "page_data";
 
+        //  处理entry.json中关于番剧集数/视频分P、以及标题等信息
+
         for (File file : dirPathList) {
             try {
-                if (!new File(file.getPath() + "\\entry.json").exists())
-                    System.out.print(file.getPath());
-
                 JsonObject jsonObject = getReader(file);
 
                 this.videoName = getReader(file).getString("title").replace(" ", "_");
@@ -45,8 +51,7 @@ public class GetJsonData {
                 } else if (jsonObject.getJsonObject(userVideo) != null) {
                     this.indexList.add(jsonObject.getJsonObject(userVideo).getString("download_subtitle"));
                     this.indexTitleList.add(jsonObject.getJsonObject(userVideo).getString("part"));
-                } else
-                    throw new NullPointerException();
+                }
                 this.availableFileList.add(file);
 
             } catch (NullPointerException | FileNotFoundException e) {
@@ -64,18 +69,22 @@ public class GetJsonData {
     }
 
     public ArrayList<String> getIndexList() {
+        //  返回索引列表
         return this.indexList;
     }
 
     public ArrayList<String> getIndexTitleList() {
+        //  返回索引标题列表
         return this.indexTitleList;
     }
 
     public String getVideoName() {
+        //  返回视频名称列表
         return this.videoName;
     }
 
     public ArrayList<File> getAvailableFileList() {
+        //  返回确定导出的视频列表
         return this.availableFileList;
     }
 }
