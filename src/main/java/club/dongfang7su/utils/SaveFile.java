@@ -5,19 +5,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class SaveFile {
-    public SaveFile(String dirPath, ArrayList<File> filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
-        File path = new File(dirPath);
-//        System.out.println(path.getPath() + " " + path.exists());
-        File savePath = new File(path.getParentFile() + "\\" + Replace.replaceCharacters(dirName));
-        File file = new File(dirPath);
-        int allFilesNumber = Objects.requireNonNull(file.listFiles()).length;
+    public SaveFile(File dirPath, ArrayList<File> filesPath, String dirName, ArrayList<String> fileNameList, String encoder) {
+        File savePath = new File(dirPath.getParentFile() + "\\" + Replace.replaceCharacters(dirName));
+        int allFilesNumber = Objects.requireNonNull(dirPath.listFiles()).length;
         System.out.println("视频总数：" + allFilesNumber);
         System.out.println("实际导出数：" + filesPath.size());
 //        System.out.println("错误数量：" + (allFilesNumber - filesPath.size()));
-        if (path.exists() && !savePath.exists()) {
+        if (dirPath.exists() && !savePath.exists()) {
             if (savePath.mkdir()) {
-                System.out.println("输出文件夹创建成功，文件将导出至：" + savePath);
+                System.out.println("\n输出文件夹创建成功");
             }
+            System.out.println("视频文件将导出至：" + savePath);
         }
 //        System.out.println(savePath.getPath() + " " + savePath.exists());
 
@@ -110,6 +108,7 @@ public class SaveFile {
 
     private static void outputFile(String[] command) {
         try {
+            long startTime = System.currentTimeMillis();
             process = new ProcessBuilder(command).redirectErrorStream(true).start();
 
             // 注册 Ctrl+C 钩子
@@ -120,7 +119,6 @@ public class SaveFile {
                 }
             }));
 
-            // 输出线程（保持不变）
             Thread outputThread = new Thread(() -> {
                 try (BufferedReader reader = new BufferedReader(
                         new InputStreamReader(process.getInputStream()))) {
@@ -155,7 +153,8 @@ public class SaveFile {
 
             // 主线程等待
             process.waitFor(); // 恢复等待
-            System.out.println("\n导出完毕，请按下回车键退出程序");
+            long endTime = System.currentTimeMillis();
+            System.out.println("\n\n导出完毕\n耗时：" + (endTime - startTime) / 1000.0 + "秒，请按下回车键退出程序");
 
             // 清理资源
             System.in.close();
